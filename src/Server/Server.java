@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 /**
  * @author NicolasDiab
- * @author GregoirePiat
+ * @author GregoirePiat <gregoire.piat@etu.univ-lyon1.fr>
  */
 public class Server {
 
