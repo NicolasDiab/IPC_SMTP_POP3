@@ -13,11 +13,11 @@ public class Server {
     /**
      * State constants
      */
-    private String STATE_LISTENING = "LISTENING";
-    private String STATE_AUTHORIZATION = "AUTHORIZATION";
-    private String STATE_TRANSACTION = "TRANSACTION";
-    private String STATE_UPDATE = "UPDATE";
-    private String STATE_CLOSED = "CLOSED";
+    private final String STATE_LISTENING = "LISTENING";
+    private final String STATE_AUTHORIZATION = "AUTHORIZATION";
+    private final String STATE_TRANSACTION = "TRANSACTION";
+    private final String STATE_UPDATE = "UPDATE";
+    private final String STATE_CLOSED = "CLOSED";
 
     private String MESSAGE_HELLO = "+OK POP3 server ready";
 
@@ -34,7 +34,7 @@ public class Server {
      * Start server
      */
     public void launch(){
-        try{
+        try {
             ServerSocket myconnex = new ServerSocket(port,6);
 
             // acceptation de la connexion du client - méthode bloquante en attendant le client
@@ -68,7 +68,5 @@ public class Server {
         catch(IOException ex){
             System.err.println(ex);
         }
-
     }
-
 }

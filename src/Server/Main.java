@@ -3,7 +3,7 @@ package Server;
 public class Main {
     public static void main(String [ ] args)
     {
-        Server server = new Server(2000);
+        Server server = new Server(2001);
 
         server.launch();
     }
