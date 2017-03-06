@@ -13,23 +13,19 @@ public class Server {
     /**
      * State constants
      */
-    private const String STATE_LISTENING = "LISTENING";
-    private const String STATE_AUTHORIZATION = "AUTHORIZATION";
-    private const String STATE_TRANSACTION = "TRANSACTION";
-    private const String STATE_UPDATE = "UPDATE";
-    private const String STATE_CLOSED = "CLOSED";
+    private String STATE_LISTENING = "LISTENING";
+    private String STATE_AUTHORIZATION = "AUTHORIZATION";
+    private String STATE_TRANSACTION = "TRANSACTION";
+    private String STATE_UPDATE = "UPDATE";
+    private  String STATE_CLOSED = "CLOSED";
 
-    private const String MESSAGE_HELLO = "+OK POP3 server ready";
+    private String MESSAGE_HELLO = "+OK POP3 server ready";
 
 
-    private int ip;
     private int port;
     private String state;
 
-
-
-    public Server (int ip, int port) {
-        this.ip = ip;
+    public Server (int port) {
         this.port = port;
         this.state = STATE_CLOSED;
     }
@@ -38,24 +34,42 @@ public class Server {
      * Start server
      * @return
      */
-    public int launch(){
+    public void launch(){
         try{
             ServerSocket myconnex = new ServerSocket(port,6);
-            this.state = STATE_LISTENING;
+
             int currentByte = -1;
+
+            // acceptation de la connexion du client - méthode bloquante en attendant le client
+            Socket connexion = myconnex.accept();
+
+            // Envoie du message d'accueil au client
+            OutputStream os = connexion.getOutputStream();
+            BufferedOutputStream bos = new BufferedOutputStream(os);
+            bos.write(MESSAGE_HELLO.getBytes());
+            System.out.print("envoyé");
+
+            // Attente de réponse du client, gestion des différents messages reçus du client
+            // on passe en état LISTENING
+            this.state = STATE_LISTENING;
             while (true){
-                Socket connexion = server.accept();
+
                 try {
+
+
                     InputStream is = connexion.getInputStream();
                     BufferedInputStream bis = new BufferedInputStream(is);
-                    bis.write(MESSAGE_HELLO.getBytes());
+                    bis.read();
 
 
+                }
+                catch (Exception e) {
+                    System.err.println(e);
                 }
             }
         }
         catch(IOException ex){
-            system.err.println(ex);
+            System.err.println(ex);
         }
 
     }
