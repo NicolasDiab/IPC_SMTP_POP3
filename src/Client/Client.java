@@ -1,7 +1,8 @@
 package Client;
 
 /**
- * Created by Nicolas on 06/03/2017.
+ * @author NicolasDiab
+ * @author GregoirePiat
  */
 public class Client {
 }
