@@ -32,9 +32,8 @@ public class Server {
 
     /**
      * Start server
-     * @return
      */
-    public int launch(){
+    public void launch(){
         try{
             ServerSocket myconnex = new ServerSocket(port,6);
             this.state = STATE_LISTENING;
@@ -56,7 +55,6 @@ public class Server {
         catch(IOException ex){
             System.err.println(ex);
         }
-        return 0;
     }
 
 }
