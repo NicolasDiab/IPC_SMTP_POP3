@@ -17,7 +17,7 @@ public class Server {
     private String STATE_AUTHORIZATION = "AUTHORIZATION";
     private String STATE_TRANSACTION = "TRANSACTION";
     private String STATE_UPDATE = "UPDATE";
-    private  String STATE_CLOSED = "CLOSED";
+    private String STATE_CLOSED = "CLOSED";
 
     private String MESSAGE_HELLO = "+OK POP3 server ready";
 
@@ -37,31 +37,28 @@ public class Server {
         try{
             ServerSocket myconnex = new ServerSocket(port,6);
 
-            int currentByte = -1;
-
             // acceptation de la connexion du client - méthode bloquante en attendant le client
+            System.out.println("Attente du client");
             Socket connexion = myconnex.accept();
+            System.out.println("Nouveau client conecté");
 
             // Envoie du message d'accueil au client
             OutputStream os = connexion.getOutputStream();
             BufferedOutputStream bos = new BufferedOutputStream(os);
             bos.write(MESSAGE_HELLO.getBytes());
             bos.flush();
-            System.out.print("envoyé");
+            System.out.println("message envoyé");
 
             // Attente de réponse du client, gestion des différents messages reçus du client
             // on passe en état LISTENING
             this.state = STATE_LISTENING;
             while (true){
-
                 try {
-
-
                     InputStream is = connexion.getInputStream();
                     BufferedInputStream bis = new BufferedInputStream(is);
                     bis.read();
 
-
+                    //
                 }
                 catch (Exception e) {
                     System.err.println(e);
