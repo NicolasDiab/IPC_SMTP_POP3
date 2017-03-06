@@ -32,7 +32,6 @@ public class Server {
 
     /**
      * Start server
-     * @return
      */
     public void launch(){
         try{
@@ -47,6 +46,7 @@ public class Server {
             OutputStream os = connexion.getOutputStream();
             BufferedOutputStream bos = new BufferedOutputStream(os);
             bos.write(MESSAGE_HELLO.getBytes());
+            bos.flush();
             System.out.print("envoyé");
 
             // Attente de réponse du client, gestion des différents messages reçus du client
