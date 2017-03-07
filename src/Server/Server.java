@@ -2,6 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.*;
+import Utils.*;
 
 /**
  * @author NicolasDiab
@@ -40,6 +41,9 @@ public class Server {
     private int port;
     private String state;
 
+    // couche qui simplifie la gestion des échanges de message avec le client
+    private Message messageUtils;
+
     public Server (int port) {
         this.port = port;
         this.state = STATE_CLOSED;
@@ -57,16 +61,17 @@ public class Server {
             Socket connexion = myconnex.accept();
             System.out.println("Nouveau client conecté");
 
-            // Envoie du message d'accueil au client
-            OutputStream os = connexion.getOutputStream();
-            BufferedOutputStream bos = new BufferedOutputStream(os);
-            bos.write(MSG_HELLO.getBytes());
-            bos.flush();
+            // initialize a message instance
+            this.messageUtils = new Message(connexion);
+
+            // send a hello message to the client
+            this.messageUtils.send(MSG_HELLO);
             System.out.println("message envoyé");
 
             // Attente de réponse du client, gestion des différents messages reçus du client
             // on passe en état LISTENING
             this.state = STATE_LISTENING;
+            
             while (true){
                 try {
                     InputStream is = connexion.getInputStream();
