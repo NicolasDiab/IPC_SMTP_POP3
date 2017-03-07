@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * @author GregoirePiat
  */
-public class Message {
+public class Mail {
 
     private String fromHeader;
     private String toHeader;
@@ -14,7 +14,7 @@ public class Message {
     private String messageId;
     private String body;
 
-    public Message(ArrayList<String> headers, String body){
+    public Mail(ArrayList<String> headers, String body){
 
         this.fromHeader = headers.get(0);
         this.toHeader = headers.get(1);
