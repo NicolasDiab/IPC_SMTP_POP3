@@ -10,6 +10,11 @@ public class FileManager {
 
     public static final String FILE_STORAGE = System.getProperty("user.dir") + "/tmp/";
 
+
+    /**
+     * Store mail into user file
+     * @param mail Mail
+     */
     public static void storeMail(Mail mail){
 
         String filePath = FILE_STORAGE + mail.getUser().getName();

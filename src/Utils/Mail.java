@@ -15,6 +15,12 @@ public class Mail {
     private String body;
     private User user;
 
+    /**
+     * Mail constructor
+     * @param headers   ArrayList<String>
+     * @param body      String
+     * @param user      User
+     */
     public Mail(ArrayList<String> headers, String body, User user){
 
         this.fromHeader = headers.get(0);

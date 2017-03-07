@@ -13,6 +13,11 @@ public class User {
 
     private ArrayList<Mail> mails;
 
+    /**
+     * User constructor
+     * @param name String
+     * @param mailAddress String
+     */
     public User(String name, String mailAddress){
         this.name = name;
         this.mailAddress = mailAddress;
