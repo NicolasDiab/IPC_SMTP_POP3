@@ -18,6 +18,9 @@ public class Message {
         this.socket = socket;
     }
 
+    /**
+     * Stop the process until the serve receives the endSequence
+      */
     public String read(String endSequence) {
         byte[] messageByte = new byte[1000];
         boolean end = false;
@@ -57,11 +60,15 @@ public class Message {
         return messageString;
     }
 
-    public void send(String message) {
+    /**
+     * Send a message to the client
+     * @param message
+     */
+    public void write(String message) {
         try {
             OutputStream os = socket.getOutputStream();
             BufferedOutputStream bos = new BufferedOutputStream(os);
-            bos.write((message + MSG_END).getBytes());
+            bos.write((message).getBytes());
             bos.flush();
         }
         catch (Exception e) {

@@ -56,7 +56,7 @@ public class Server {
         try {
             ServerSocket myconnex = new ServerSocket(port,6);
 
-            // acceptation de la connexion du client - méthode bloquante en attendant le client
+            // accept the client connection - stop the processus waiting for the client
             System.out.println("Attente du client");
             Socket connexion = myconnex.accept();
             System.out.println("Nouveau client conecté");
@@ -64,16 +64,22 @@ public class Server {
             // initialize a message instance
             this.messageUtils = new Message(connexion);
 
-            // send a hello message to the client
-            this.messageUtils.send(MSG_HELLO);
+            // write a hello message to the client
+            this.messageUtils.write(MSG_HELLO);
             System.out.println("message envoyé");
 
-            // Attente de réponse du client, gestion des différents messages reçus du client
-            // on passe en état LISTENING
+            // Wait for the client response, manage messages received from the client
+            // Entering the Listening State
             this.state = STATE_LISTENING;
 
             while (true){
-                this.messageUtils.read("\r\n");
+                String messageReceived = this.messageUtils.read("\r\n");
+
+                switch(messageReceived) {
+                    /*switch(this.state){
+
+                    }*/
+                }
             }
         }
         catch(IOException ex){
