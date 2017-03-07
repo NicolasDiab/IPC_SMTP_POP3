@@ -9,17 +9,16 @@ import java.io.IOException;
  */
 public class FileManager {
 
-    public static final String FILE_STORAGE = "../tmp/fileStorage.txt";
+    public static final String FILE_STORAGE = System.getProperty("user.dir") + "../tmp/";
 
+    public static void storeMessage(Mail mail){
 
-    public static void storeMessage(Message message){
-
-        /** @TODO  Format message **/
+        /** @TODO  Format mail **/
 
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(FILE_STORAGE));
-            writer.write( message.getBody());
+            writer.write(mail.getBody());
         }
         catch (IOException e){
             System.out.println(e.getMessage());
