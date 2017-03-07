@@ -12,8 +12,6 @@ public class FileManager {
 
     public static void storeMail(Mail mail){
 
-        /** @TODO  Format mail **/
-
         String filePath = FILE_STORAGE + mail.getUser().getName();
         String mailString = "";
 
@@ -47,8 +45,6 @@ public class FileManager {
         mailString += "\r\n";
         mailString += mail.getBody() + ".\r\n";
 
-
         return mailString;
     }
-
 }
