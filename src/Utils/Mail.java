@@ -13,8 +13,9 @@ public class Mail {
     private String dateHeader;
     private String messageId;
     private String body;
+    private User user;
 
-    public Mail(ArrayList<String> headers, String body){
+    public Mail(ArrayList<String> headers, String body, User user){
 
         this.fromHeader = headers.get(0);
         this.toHeader = headers.get(1);
@@ -22,6 +23,7 @@ public class Mail {
         this.dateHeader = headers.get(3);
         this.messageId = headers.get(4);
         this.body = body;
+        this.user = user;
     }
 
 
@@ -72,5 +74,13 @@ public class Mail {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
