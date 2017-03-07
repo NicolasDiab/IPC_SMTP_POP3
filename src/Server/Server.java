@@ -2,7 +2,6 @@ package Server;
 
 import java.io.*;
 import java.net.*;
-import java.util.Arrays;
 
 /**
  * @author NicolasDiab
@@ -19,9 +18,25 @@ public class Server {
     private final String STATE_UPDATE = "UPDATE";
     private final String STATE_CLOSED = "CLOSED";
 
-    private String MESSAGE_HELLO = "+OK POP3 server ready";
+    /**
+     * Client's commands constants
+     */
+    private final String CMD_APOP = "APOP";
+    private final String CMD_STAT = "STAT";
+    private final String CMD_RETR = "RETR";
+    private final String CMD_QUIT = "QUIT";
 
+    /**
+     * Server's messages constants
+     */
+    private String MSG_OK = "+OK";
+    private String MSG_ERR = "-ERR";
 
+    private String MSG_HELLO = this.MSG_OK + " POP3 server ready";
+
+    /**
+     * Properties
+     */
     private int port;
     private String state;
 
@@ -45,7 +60,7 @@ public class Server {
             // Envoie du message d'accueil au client
             OutputStream os = connexion.getOutputStream();
             BufferedOutputStream bos = new BufferedOutputStream(os);
-            bos.write(MESSAGE_HELLO.getBytes());
+            bos.write(MSG_HELLO.getBytes());
             bos.flush();
             System.out.println("message envoyé");
 
