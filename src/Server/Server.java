@@ -71,18 +71,9 @@ public class Server {
             // Attente de réponse du client, gestion des différents messages reçus du client
             // on passe en état LISTENING
             this.state = STATE_LISTENING;
-            
-            while (true){
-                try {
-                    InputStream is = connexion.getInputStream();
-                    BufferedInputStream bis = new BufferedInputStream(is);
-                    bis.read();
 
-                    //
-                }
-                catch (Exception e) {
-                    System.err.println(e);
-                }
+            while (true){
+                this.messageUtils.read("\r\n");
             }
         }
         catch(IOException ex){
