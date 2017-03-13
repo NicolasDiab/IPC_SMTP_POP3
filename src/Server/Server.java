@@ -76,9 +76,48 @@ public class Server {
                 String messageReceived = this.messageUtils.read("\r\n");
 
                 switch(messageReceived) {
-                    /*switch(this.state){
-
-                    }*/
+                    case CMD_APOP:
+                        switch(this.state){
+                            case STATE_AUTHORIZATION:
+                                // client exists ?
+                                // +OK maildrop has 1 message (369 octets)
+                                //     change state
+                                // -ERR
+                                break;
+                        }
+                        break;
+                    case CMD_RETR:
+                        switch(this.state){
+                            case STATE_TRANSACTION:
+                                // message exists and not deleted ?
+                                // si non -ERR id_message
+                                // si oui +OK xxx octets
+                                // -> message
+                                break;
+                        }
+                        break;
+                    case CMD_STAT:
+                        switch(this.state){
+                            case STATE_TRANSACTION:
+                                // info messages
+                                // +OK nb_messages nb_bytes
+                                break;
+                        }
+                        break;
+                    case CMD_QUIT:
+                        switch(this.state){
+                            case STATE_AUTHORIZATION:
+                                // close the TCP connection
+                                // +OK POP3 server signing off
+                                break;
+                            case STATE_TRANSACTION:
+                                // delete deleted messages
+                                // +OK POP3 server signing off (xx messages left) or (maildrop empty)
+                                // -ERR some deleted messages not removed
+                                // in all cases, close the TCP connection
+                                break;
+                        }
+                        break;
                 }
             }
         }
