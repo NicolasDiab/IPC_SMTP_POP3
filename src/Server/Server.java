@@ -105,8 +105,9 @@ public class Server {
                                 if (apopFunction(parameter)){
                                     int mailsCount = user.getMailsCount();
                                     int bytesSize = user.getMailsSize();
-                                    this.messageUtils.write(MSG_OK);
-
+                                    /** Set Transaction state **/
+                                    this.state = STATE_TRANSACTION;
+                                    this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + "message (" + bytesSize + " octets");
                                 }
                                 else
                                     this.messageUtils.write(MSG_ERR);
