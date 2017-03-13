@@ -1,6 +1,7 @@
 package Utils;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @author GregoirePiat
@@ -62,5 +63,31 @@ public class User {
             size += mail.getSize();
         }
         return size;
+    }
+
+    public boolean hasMail(int id) {
+        for (Mail mail : mails) {
+            if (mail.getMessageId().equals(id + ""))
+                return true;
+        }
+        return false;
+    }
+
+    public Mail getMail(int id) {
+        for (Mail mail : mails) {
+            if (mail.getMessageId().equals(id))
+                return mail;
+        }
+        return null;
+    }
+
+    public boolean mailDeleted(int id) {
+        for (Mail mail : mails) {
+            if (mail.getMessageId().equals(id + "")) {
+                if (mail.getDeleted())
+                    return true;
+            }
+        }
+        return false;
     }
 }

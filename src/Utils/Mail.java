@@ -15,6 +15,8 @@ public class Mail {
     private String body;
     private User user;
 
+    private Boolean deleted;
+
     /**
      * Mail constructor
      * @param headers   ArrayList<String>
@@ -90,4 +92,12 @@ public class Mail {
     }
 
     public int getSize() { return FileManager.formatMailString(this).getBytes().length; }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

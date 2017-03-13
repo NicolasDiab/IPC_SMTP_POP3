@@ -108,7 +108,7 @@ public class Server {
                     case CMD_APOP:
                         switch(this.state){
                             case STATE_AUTHORIZATION:
-                                if (apopFunction(parameterArray[1])){
+                                if (/*apopFunction(parameterArray[1])*/true){
                                     int mailsCount = user.getMailsCount();
                                     int bytesSize = user.getMailsSize();
                                     /** Set Transaction state **/
@@ -123,10 +123,16 @@ public class Server {
                     case CMD_RETR:
                         switch(this.state){
                             case STATE_TRANSACTION:
+                                int mailId = Integer.parseInt(parameterArray[0]);
                                 // message exists and not deleted ?
-                                // si non -ERR id_message
-                                // si oui +OK xxx octets
-                                // -> message
+                                if (user.hasMail(mailId) && !user.mailDeleted(mailId)) {
+                                    this.messageUtils.write(MSG_ERR + " " + mailId);
+                                } else {
+                                    Mail m = user.getMail(mailId);
+                                    this.messageUtils.write(MSG_OK + " " + m.getSize() + " bytes");
+                                    // write the message
+                                    this.messageUtils.write(FileManager.formatMailString(m));
+                                }
                                 break;
                         }
                         break;
@@ -134,7 +140,9 @@ public class Server {
                         switch(this.state){
                             case STATE_TRANSACTION:
                                 // info messages
-                                // +OK nb_messages nb_bytes
+                                int nb_messages = user.getMailsCount();
+                                int nb_bytes = user.getMailsSize();
+                                this.messageUtils.write(MSG_OK + " " + nb_messages + " " + nb_bytes);
                                 break;
                         }
                         break;
@@ -148,7 +156,9 @@ public class Server {
                             case STATE_TRANSACTION:
                                 // remove deleted messages
                                 if (true) {
-                                    this.messageUtils.write(MSG_OK +" POP3 server signing off (xx messages left) or (maildrop empty)");
+                                    int nb_messages = user.getMailsCount();
+                                    this.messageUtils.write(MSG_OK +" POP3 server signing off (" + nb_messages +
+                                            " messages left)");
                                 } else {
                                     this.messageUtils.write(MSG_ERR + " some deleted messages not removed");
                                 }
