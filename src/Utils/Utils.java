@@ -11,12 +11,14 @@ public class Utils {
 
         try {
             /** Compute base **/
-            String s= Long.toString(timestamp) + getSharedSecret();
+            String s = Long.toString(timestamp) + getSharedSecret();
+
+            System.out.println("SecretToHash:" + Long.toString(timestamp) + getSharedSecret());
 
             /** Compute MD5 checksum **/
-            MessageDigest m= MessageDigest.getInstance("MD5");
+            MessageDigest m = MessageDigest.getInstance("MD5");
             m.update(s.getBytes(),0,s.length());
-            String checksum = (new BigInteger(1,m.digest()).toString(16));
+            String checksum = (new BigInteger(1, m.digest()).toString(16));
             return checksum;
 
         }

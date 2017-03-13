@@ -113,7 +113,7 @@ public class Server {
                                     int bytesSize = user.getMailsSize();
                                     /** Set Transaction state **/
                                     this.state = STATE_TRANSACTION;
-                                    this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + "message (" + bytesSize + " octets");
+                                    this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + "message (" + bytesSize + " octets)");
                                 }
                                 else
                                     this.messageUtils.write(MSG_ERR);
@@ -167,6 +167,8 @@ public class Server {
 
 
     public boolean apopFunction(String checksumReceived){
+
+        System.out.println(Long.parseLong(timestampSent));
 
         String checksum = Utils.computeChecksum(Long.parseLong(timestampSent));
 

@@ -4,6 +4,9 @@ import Utils.FileManager;
 import Utils.Mail;
 import Utils.User;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 
