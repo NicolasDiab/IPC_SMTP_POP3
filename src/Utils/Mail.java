@@ -33,7 +33,6 @@ public class Mail {
     }
 
 
-
     public String getFromHeader() {
         return fromHeader;
     }
