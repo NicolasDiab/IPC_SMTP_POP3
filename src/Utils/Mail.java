@@ -88,4 +88,6 @@ public class Mail {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public int getSize() { return FileManager.formatMailString(this).getBytes().length; }
 }

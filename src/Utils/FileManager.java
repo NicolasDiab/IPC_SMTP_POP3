@@ -40,7 +40,7 @@ public class FileManager {
         }
     }
 
-    private static String formatMailString(Mail mail){
+    public static String formatMailString(Mail mail){
 
         String mailString = "";
         mailString += mail.getFromHeader() + "\r\n";

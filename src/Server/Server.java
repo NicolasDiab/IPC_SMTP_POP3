@@ -93,7 +93,7 @@ public class Server {
             // Entering the Listening State
             this.state = STATE_LISTENING;
 
-            while (true){
+            while (!connexion.isClosed()){
                 String messageReceived = this.messageUtils.read("\r\n");
                 String command = messageReceived.split("\\s+")[0];
                 String parameter = messageReceived.split("\\s+")[1];
@@ -140,14 +140,19 @@ public class Server {
                     case CMD_QUIT:
                         switch(this.state){
                             case STATE_AUTHORIZATION:
+                                this.messageUtils.write(MSG_OK + " POP3 server signing off");
                                 // close the TCP connection
-                                // +OK POP3 server signing off
+                                connexion.close();
                                 break;
                             case STATE_TRANSACTION:
-                                // delete deleted messages
-                                // +OK POP3 server signing off (xx messages left) or (maildrop empty)
-                                // -ERR some deleted messages not removed
+                                // remove deleted messages
+                                if (true) {
+                                    this.messageUtils.write(MSG_OK +" POP3 server signing off (xx messages left) or (maildrop empty)");
+                                } else {
+                                    this.messageUtils.write(MSG_ERR + " some deleted messages not removed");
+                                }
                                 // in all cases, close the TCP connection
+                                connexion.close();
                                 break;
                         }
                         break;

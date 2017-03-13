@@ -52,7 +52,16 @@ public class User {
         this.mails = mails;
     }
 
+<<<<<<< HEAD
     public int getMailsCount(){
         return mails.size();
+=======
+    public int getMailsSize() {
+        int size = 0;
+        for (Mail mail : mails) {
+            size += mail.getSize();
+        }
+        return size;
+>>>>>>> 3f6ebdb62f49c7ef1ebbccd7c01d4a817f3bffa4
     }
 }
