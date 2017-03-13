@@ -20,7 +20,7 @@ public class Main {
         headers.add("Subject: Saying Hello");
         headers.add("Date: 21 Nov 1997");
         headers.add("Message-ID <1234@local.machine.example>");
-        Mail mail = new Mail(headers, "Coucou Jean-Mi, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", nico);
+        Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", nico);
         FileManager.storeMail(mail);
 
         // on a mis 2001 et non le port habituel pour des problèmes de disponibilité de port

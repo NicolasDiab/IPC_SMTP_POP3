@@ -51,4 +51,8 @@ public class User {
     public void setMails(ArrayList<Mail> mails) {
         this.mails = mails;
     }
+
+    public int getMailsCount(){
+        return mails.size();
+    }
 }
