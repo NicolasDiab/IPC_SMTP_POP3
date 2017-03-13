@@ -51,4 +51,12 @@ public class User {
     public void setMails(ArrayList<Mail> mails) {
         this.mails = mails;
     }
+
+    public int getMailsSize() {
+        int size = 0;
+        for (Mail mail : mails) {
+            size += mail.getSize();
+        }
+        return size;
+    }
 }
