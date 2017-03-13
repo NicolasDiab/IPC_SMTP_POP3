@@ -2,6 +2,10 @@ package Server;
 
 import java.io.*;
 import java.net.*;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import Utils.*;
 
 /**
@@ -40,6 +44,8 @@ public class Server {
      */
     private int port;
     private String state;
+    private String checksumSent;
+    private String timestampSent;
 
     // couche qui simplifie la gestion des échanges de message avec le client
     private Message messageUtils;
@@ -129,5 +135,18 @@ public class Server {
         catch(IOException ex){
             System.err.println(ex);
         }
+    }
+
+
+    public boolean apopFunction(String checksumReceived){
+
+        String checksum = Utils.computeChecksum(Integer.parseInt(timestampSent));
+
+        /** If checksum is right, return true **/
+        if (checksumReceived.equals(checksum))
+            return true;
+
+        return false;
+
     }
 }
