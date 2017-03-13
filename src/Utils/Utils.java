@@ -7,16 +7,16 @@ import java.security.NoSuchAlgorithmException;
 
 public class Utils {
 
-    public static String computeChecksum(int timestamp){
+    public static String computeChecksum(long timestamp){
 
         try {
             /** Compute base **/
-            String s= Integer.toString(timestamp) + getSharedSecret();
+            String s= Long.toString(timestamp) + getSharedSecret();
 
             /** Compute MD5 checksum **/
             MessageDigest m= MessageDigest.getInstance("MD5");
             m.update(s.getBytes(),0,s.length());
-            String checksum = ("MD5: "+new BigInteger(1,m.digest()).toString(16));
+            String checksum = (new BigInteger(1,m.digest()).toString(16));
             return checksum;
 
         }

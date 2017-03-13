@@ -24,8 +24,8 @@ public class Main {
         FileManager.storeMail(mail);
 
         // on a mis 2001 et non le port habituel pour des problèmes de disponibilité de port
-        //Server server = new Server(2001);
+        Server server = new Server(2001);
 
-        //server.launch();
+        server.launch();
     }
 }

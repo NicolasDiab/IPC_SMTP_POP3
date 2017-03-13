@@ -2,11 +2,11 @@ package Server;
 
 import java.io.*;
 import java.net.*;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-
 import Utils.*;
 
 /**
@@ -64,6 +64,10 @@ public class Server {
         try {
             ServerSocket myconnex = new ServerSocket(port,6);
 
+            // Wait for the client response, manage messages received from the client
+            // Entering the Listening State
+            this.state = STATE_LISTENING;
+
             // accept the client connection - stop the processus waiting for the client
             System.out.println("Attente du client");
             Socket connexion = myconnex.accept();
@@ -73,7 +77,8 @@ public class Server {
             this.messageUtils = new Message(connexion);
 
             // Initialize timestamp when message is sent
-            this.timestampSent = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            this.timestampSent = Long.toString(timestamp.getTime());
 
             user = new User("Nico", "nicolas.diab@etu.univ-lyon1.fr");
             ArrayList<String> headers = new ArrayList<>();
@@ -89,20 +94,21 @@ public class Server {
             this.messageUtils.write(MSG_HELLO + " " + timestampSent);
             System.out.println("message envoyé");
 
-            // Wait for the client response, manage messages received from the client
-            // Entering the Listening State
-            this.state = STATE_LISTENING;
+            this.state = STATE_AUTHORIZATION;
+
 
             while (!connexion.isClosed()){
                 String messageReceived = this.messageUtils.read("\r\n");
-                String command = messageReceived.split("\\s+")[0];
-                String parameter = messageReceived.split("\\s+")[1];
+                String command = messageReceived.split("\\s+")[0].toUpperCase();
+                String[] parameters = messageReceived.split("\\s+");
+                String[] parameterArray = Arrays.copyOfRange(parameters, 1, parameters.length);
+                System.out.println("Command " + command);
 
-                switch(messageReceived) {
+                switch(command) {
                     case CMD_APOP:
                         switch(this.state){
                             case STATE_AUTHORIZATION:
-                                if (apopFunction(parameter)){
+                                if (apopFunction(parameterArray[1])){
                                     int mailsCount = user.getMailsCount();
                                     int bytesSize = user.getMailsSize();
                                     /** Set Transaction state **/
@@ -111,11 +117,6 @@ public class Server {
                                 }
                                 else
                                     this.messageUtils.write(MSG_ERR);
-                                ;
-                                // client exists ?
-                                // +OK maildrop has 1 message (369 octets)
-                                //     change state
-                                // -ERR
                                 break;
                         }
                         break;
@@ -167,7 +168,10 @@ public class Server {
 
     public boolean apopFunction(String checksumReceived){
 
-        String checksum = Utils.computeChecksum(Integer.parseInt(timestampSent));
+        String checksum = Utils.computeChecksum(Long.parseLong(timestampSent));
+
+        System.out.println("ChecksumReceived -  " + checksumReceived);
+        System.out.println("ChecksumComputed -  " + checksum);
 
         /** If checksum is right, return true **/
         if (checksumReceived.equals(checksum))
