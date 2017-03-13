@@ -75,7 +75,7 @@ public class User {
 
     public Mail getMail(int id) {
         for (Mail mail : mails) {
-            if (mail.getMessageId().equals(id))
+            if (mail.getMessageId().equals(id + ""))
                 return mail;
         }
         return null;

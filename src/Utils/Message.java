@@ -12,7 +12,7 @@ public class Message {
 
     private Socket socket;
 
-    private String MSG_END = "/r/n";
+    private String MSG_END = "\r\n";
 
     public Message (Socket socket) {
         this.socket = socket;
@@ -68,7 +68,7 @@ public class Message {
         try {
             OutputStream os = socket.getOutputStream();
             BufferedOutputStream bos = new BufferedOutputStream(os);
-            bos.write((message).getBytes());
+            bos.write((message + MSG_END).getBytes());
             bos.flush();
         }
         catch (Exception e) {

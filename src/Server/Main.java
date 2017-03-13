@@ -18,11 +18,11 @@ public class Main {
         System.out.println(userDir);
         User nico = new User("Strelytsia", "nicotheheros@hotmail.fr");
         ArrayList<String> headers = new ArrayList<>();
-        headers.add("From : JohnDoe <jdoe@machine.example>");
-        headers.add("To: Mary Smith <mary@machine.example>");
-        headers.add("Subject: Saying Hello");
-        headers.add("Date: 21 Nov 1997");
-        headers.add("Message-ID <1234@local.machine.example>");
+        headers.add("jdoe@machine.example");
+        headers.add("mary@machine.example");
+        headers.add("Saying Hello");
+        headers.add("21 Nov 1997");
+        headers.add("1");
         Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", nico);
         FileManager.storeMail(mail);
 

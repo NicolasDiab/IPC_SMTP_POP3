@@ -47,7 +47,6 @@ public class Server {
     private String state;
     private String checksumSent;
     private String timestampSent;
-    private User user;
 
     // couche qui simplifie la gestion des échanges de message avec le client
     private Message messageUtils;
@@ -67,11 +66,11 @@ public class Server {
             // Wait for the client response, manage messages received from the client
             // Entering the Listening State
             this.state = STATE_LISTENING;
-
-            // accept the client connection - stop the processus waiting for the client
             System.out.println("Attente du client");
             Socket connexion = myconnex.accept();
-            System.out.println("Nouveau client conecté");
+
+            // accept the client connection - stop the processus waiting for the client
+            System.out.println("New client connected");
 
             // initialize a message instance
             this.messageUtils = new Message(connexion);
@@ -80,22 +79,19 @@ public class Server {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             this.timestampSent = Long.toString(timestamp.getTime());
 
-            user = new User("Nico", "nicolas.diab@etu.univ-lyon1.fr");
-            ArrayList<String> headers = new ArrayList<>();
-            headers.add("From : JohnDoe <jdoe@machine.example>");
-            headers.add("To: Mary Smith <mary@machine.example>");
-            headers.add("Subject: Saying Hello");
-            headers.add("Date: 21 Nov 1997");
-            headers.add("Message-ID <1234@local.machine.example>");
-            Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", user);
-            user.addMail(mail);
+            // Initialise users
+            User userNico = new User("Nico", "nicolas.diab@etu.univ-lyon1.fr");
+            User userGregoire = new User("Gregoire", "gregoire.piat@etu.univ-lyon1.fr");
+            ArrayList<User> users = new ArrayList<User>();
+            users.add(userNico);
+            users.add(userGregoire);
+            User currentUser = null;
 
             // write a hello message to the client
             this.messageUtils.write(MSG_HELLO + " " + timestampSent);
             System.out.println("message envoyé");
 
             this.state = STATE_AUTHORIZATION;
-
 
             while (!connexion.isClosed()){
                 String messageReceived = this.messageUtils.read("\r\n");
@@ -108,40 +104,69 @@ public class Server {
                     case CMD_APOP:
                         switch(this.state){
                             case STATE_AUTHORIZATION:
+                                // Checksum
                                 if (/*apopFunction(parameterArray[1])*/true){
-                                    int mailsCount = user.getMailsCount();
-                                    int bytesSize = user.getMailsSize();
-                                    /** Set Transaction state **/
-                                    this.state = STATE_TRANSACTION;
-                                    this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + "message (" + bytesSize + " octets)");
+                                    // does the user exists ?
+                                    String username = parameterArray[0];
+                                    for (User u : users) {
+                                        if (u.getName().equals(username)) {
+                                            currentUser = u;
+                                        }
+                                    }
+
+                                    if (currentUser == null) {
+                                        this.messageUtils.write(MSG_ERR + " This user does not exist");
+                                    } else {
+                                        // retrieve the user's mails
+                                        currentUser.setMails(FileManager.retrieveMails(currentUser));
+                                        // get and write informations
+                                        int mailsCount = currentUser.getMailsCount();
+                                        int bytesSize = currentUser.getMailsSize();
+                                        /** Set Transaction state **/
+                                        this.state = STATE_TRANSACTION;
+                                        this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + " message(s) (" + bytesSize + " octets)");
+                                    }
                                 }
                                 else
-                                    this.messageUtils.write(MSG_ERR);
+                                    this.messageUtils.write(MSG_ERR + " Incorrect checksum");
+                                break;
+                            case STATE_TRANSACTION:
+                                this.messageUtils.write(MSG_ERR + " You need to be TCP connected first");
                                 break;
                         }
                         break;
                     case CMD_RETR:
                         switch(this.state){
+                            case STATE_AUTHORIZATION:
+                                this.messageUtils.write(MSG_ERR + " You need to be connected first");
+                                break;
                             case STATE_TRANSACTION:
-                                int mailId = Integer.parseInt(parameterArray[0]);
-                                // message exists and not deleted ?
-                                if (user.hasMail(mailId) && !user.mailDeleted(mailId)) {
-                                    this.messageUtils.write(MSG_ERR + " " + mailId);
-                                } else {
-                                    Mail m = user.getMail(mailId);
-                                    this.messageUtils.write(MSG_OK + " " + m.getSize() + " bytes");
-                                    // write the message
-                                    this.messageUtils.write(FileManager.formatMailString(m));
+                                try {
+                                    int mailId = Integer.parseInt(parameterArray[0]);
+                                    // message exists and not deleted ?
+                                    if (currentUser.hasMail(mailId) && !currentUser.mailDeleted(mailId)) {
+                                        Mail m = currentUser.getMail(mailId);
+                                        this.messageUtils.write(MSG_OK + " " + m.getSize() + " bytes");
+                                        // write the message
+                                        this.messageUtils.write(FileManager.formatMailString(m));
+                                    } else {
+                                        this.messageUtils.write(MSG_ERR + " " + mailId + " The message you want to retrieve does not exists or has been deleted");
+                                    }
+                                } catch (Exception e) {
+                                    this.messageUtils.write(MSG_ERR + " wrong format. Please enter an integer for the message's id you want to retrieve");
                                 }
                                 break;
                         }
                         break;
                     case CMD_STAT:
                         switch(this.state){
+                            case STATE_AUTHORIZATION:
+                                this.messageUtils.write(MSG_ERR + " You need to be connected first");
+                                break;
                             case STATE_TRANSACTION:
                                 // info messages
-                                int nb_messages = user.getMailsCount();
-                                int nb_bytes = user.getMailsSize();
+                                int nb_messages = currentUser.getMailsCount();
+                                int nb_bytes = currentUser.getMailsSize();
                                 this.messageUtils.write(MSG_OK + " " + nb_messages + " " + nb_bytes);
                                 break;
                         }
@@ -156,11 +181,11 @@ public class Server {
                             case STATE_TRANSACTION:
                                 // remove deleted messages
                                 if (true) {
-                                    int nb_messages = user.getMailsCount();
+                                    int nb_messages = currentUser.getMailsCount();
                                     this.messageUtils.write(MSG_OK +" POP3 server signing off (" + nb_messages +
                                             " messages left)");
                                 } else {
-                                    this.messageUtils.write(MSG_ERR + " some deleted messages not removed");
+                                    this.messageUtils.write(MSG_ERR + " some deleted messages were not removed");
                                 }
                                 // in all cases, close the TCP connection
                                 connexion.close();

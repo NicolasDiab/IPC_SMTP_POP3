@@ -32,6 +32,7 @@ public class Mail {
         this.messageId = headers.get(4);
         this.body = body;
         this.user = user;
+        this.deleted = false;
     }
 
 

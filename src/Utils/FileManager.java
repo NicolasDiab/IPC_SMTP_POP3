@@ -52,4 +52,23 @@ public class FileManager {
 
         return mailString;
     }
+
+    /**
+     * TODO
+     * @param user
+     * @return a list of messages
+     */
+    public static ArrayList<Mail> retrieveMails(User user) {
+        ArrayList<Mail> list = new ArrayList<Mail>();
+        ArrayList<String> headers = new ArrayList<>();
+        headers.add("jdoe@machine.example");
+        headers.add("mary@machine.example");
+        headers.add("Saying Hello");
+        headers.add("21 Nov 1997");
+        headers.add("1");
+        Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", user);
+
+        list.add(mail);
+        return list;
+    }
 }
