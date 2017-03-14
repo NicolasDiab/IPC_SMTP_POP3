@@ -1,0 +1,8 @@
+jdoe@machine.example
+mary@machine.example
+Saying Hello
+21 Nov 1997
+
+Hello server,
+This is a message just to say hello.
+So, "Hello"..

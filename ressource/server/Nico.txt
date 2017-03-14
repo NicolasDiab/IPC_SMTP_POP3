@@ -1,0 +1,34 @@
+jdoe@machine.example
+nico.diab@machine.example
+Saying Hello
+21 Nov 1997
+1234@localmachine.example
+
+Hello server,
+This is a message just to say hello.
+So, "Hello".
+.
+
+alexandre.gory@test.com
+nico.diab@machine.example
+Saying Hello
+21 Nov 1997
+1234@localmachine.example
+
+
+Hello server,
+This is a message just to say yolo.
+So, "YOLO".
+.
+
+jdoe@machine.example
+nico.diab@machine.example
+Saying Hello
+21 Nov 1997
+1234@localmachine.example
+
+
+Hello server,
+This is a message just to say yallah.
+So, "YALLAH".
+.

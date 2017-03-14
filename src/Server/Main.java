@@ -3,16 +3,16 @@ package Server;
 import Utils.FileManager;
 import Utils.Mail;
 import Utils.User;
+import Utils.Utils;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Main {
     public static void main(String [ ] args)
     {
+        String filepath = System.getProperty("user.dir") + "/ressource/server/Nico.txt";
+        ArrayList<Mail> mails = Utils.readMailsFromFile(filepath);
+        System.out.println(mails.size());
 
         String userDir = System.getProperty("user.dir");
         System.out.println(userDir);
