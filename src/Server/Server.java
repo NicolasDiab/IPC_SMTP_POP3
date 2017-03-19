@@ -102,31 +102,34 @@ public class Server {
                     case CMD_APOP:
                         switch(this.state){
                             case STATE_AUTHORIZATION:
-                                // Checksum
-                                if (/*apopFunction(parameterArray[1])*/true){
-                                    // does the user exists ?
-                                    String username = parameterArray[0];
-                                    for (User u : users) {
-                                        if (u.getName().equals(username)) {
-                                            currentUser = u;
+                                if (parameterArray.length > 1) {
+                                    if (/*apopFunction(parameterArray[1])*/true){
+                                        // does the user exists ?
+                                        String username = parameterArray[0];
+                                        for (User u : users) {
+                                            if (u.getName().equals(username)) {
+                                                currentUser = u;
+                                            }
+                                        }
+
+                                        if (currentUser == null) {
+                                            this.messageUtils.write(MSG_ERR + " This user does not exist");
+                                        } else {
+                                            // retrieve the user's mails
+                                            currentUser.setMails(FileManager.retrieveMails(currentUser));
+                                            // get and write informations
+                                            int mailsCount = currentUser.getMailsCount();
+                                            int bytesSize = currentUser.getMailsSize();
+                                            /** Set Transaction state **/
+                                            this.state = STATE_TRANSACTION;
+                                            this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + " message(s) (" + bytesSize + " octets)");
                                         }
                                     }
-
-                                    if (currentUser == null) {
-                                        this.messageUtils.write(MSG_ERR + " This user does not exist");
-                                    } else {
-                                        // retrieve the user's mails
-                                        currentUser.setMails(FileManager.retrieveMails(currentUser));
-                                        // get and write informations
-                                        int mailsCount = currentUser.getMailsCount();
-                                        int bytesSize = currentUser.getMailsSize();
-                                        /** Set Transaction state **/
-                                        this.state = STATE_TRANSACTION;
-                                        this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + " message(s) (" + bytesSize + " octets)");
-                                    }
+                                    else
+                                        this.messageUtils.write(MSG_ERR + " Incorrect checksum");
+                                } else {
+                                    this.messageUtils.write(MSG_ERR + " Incorrect parameters (lacking user or checksum)");
                                 }
-                                else
-                                    this.messageUtils.write(MSG_ERR + " Incorrect checksum");
                                 break;
                             case STATE_TRANSACTION:
                                 this.messageUtils.write(MSG_ERR + " You need to be TCP connected first");
@@ -189,6 +192,9 @@ public class Server {
                                 connexion.close();
                                 break;
                         }
+                        break;
+                    default:
+                        this.messageUtils.write(MSG_ERR + " invalid command");
                         break;
                 }
             }

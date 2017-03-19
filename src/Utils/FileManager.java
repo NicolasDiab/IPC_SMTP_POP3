@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class FileManager {
 
     public static final String FILE_STORAGE = System.getProperty("user.dir") + "/tmp/";
+    public static final String MAIL_STORAGE = System.getProperty("user.dir") + "/ressource/server/";
 
 
     /**
@@ -59,7 +60,7 @@ public class FileManager {
      * @return a list of messages
      */
     public static ArrayList<Mail> retrieveMails(User user) {
-        ArrayList<Mail> list = new ArrayList<Mail>();
+        /*ArrayList<Mail> list = new ArrayList<Mail>();
         ArrayList<String> headers = new ArrayList<>();
         headers.add("jdoe@machine.example");
         headers.add("mary@machine.example");
@@ -69,6 +70,10 @@ public class FileManager {
         Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", user);
 
         list.add(mail);
-        return list;
+        return list;*/
+
+        String filePath = MAIL_STORAGE + user.getName() + ".txt";
+
+        return Utils.readMailsFromFile(filePath);
     }
 }

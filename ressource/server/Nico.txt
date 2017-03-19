@@ -2,7 +2,7 @@ jdoe@machine.example
 nico.diab@machine.example
 Saying Hello
 21 Nov 1997
-1234@localmachine.example
+1
 
 Hello server,
 This is a message just to say hello.
@@ -13,7 +13,7 @@ alexandre.gory@test.com
 nico.diab@machine.example
 Saying Hello
 21 Nov 1997
-1234@localmachine.example
+2
 
 
 Hello server,
@@ -25,7 +25,7 @@ jdoe@machine.example
 nico.diab@machine.example
 Saying Hello
 21 Nov 1997
-1234@localmachine.example
+4
 
 
 Hello server,
