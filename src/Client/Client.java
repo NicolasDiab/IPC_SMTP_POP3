@@ -110,9 +110,8 @@ public class Client {
                     // Check server response : +OK or -ERR
                     // if +OK, read the full mail
                     if (messageReceived.split("\\s+")[0].toUpperCase().equals(MSG_OK)) {
-                        String mailReceived = this.messageUtils.read("\r\n.\r\n");
                         System.out.println("Mail reçu : ");
-                        System.out.println(mailReceived);
+                        String mailReceived = this.messageUtils.read("\r\n");
                         // store the mail in a client file
                         Mail mail = new Mail(mailReceived, user);
                         FileManager.storeMail(mail);
