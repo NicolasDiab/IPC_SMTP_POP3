@@ -20,13 +20,12 @@ public class FileManager {
     public static void storeMail(Mail mail, boolean forTheClient){
 
         // store in a different file whether it's for the client or for the server
-        String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + mail.getUser().getName();
+        String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + mail.getUser().getName() + ".txt";
         String mailString = "";
 
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
-            ArrayList<String> headers = new ArrayList<String>();
 
             System.out.println(mail.getUser().getName());
             System.out.println(mail.getBody());
@@ -63,6 +62,7 @@ public class FileManager {
         mailString += mail.getToHeader() + "\r\n";
         mailString += mail.getSubjectHeader() + "\r\n";
         mailString += mail.getDateHeader() + "\r\n";
+        mailString += mail.getMessageId() + "\r\n";
         mailString += "\r\n";
         mailString += mail.getBody();
 

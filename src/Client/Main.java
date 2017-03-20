@@ -8,7 +8,7 @@ public class Main {
     public static void main(String [ ] args)
     {
         // on a mis 2001 et non le port habituel pour des problèmes de disponibilité de port
-        Client client = new Client(2001, "localhost");
+        Client client = new Client(2001, "192.168.43.74");
 
         client.launch();
     }
