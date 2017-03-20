@@ -53,8 +53,15 @@ public class Mail {
                     for (int i = 5; i < newMail.size(); ++i)
                         body += newMail.get(i) + "\n";
 
-            /* Create a new message */
-                    Mail mail = new Mail(headers, body, user);
+                    /* Create a new message */
+                    this.fromHeader = headers.get(0);
+                    this.toHeader = headers.get(1);
+                    this.subjectHeader = headers.get(2);
+                    this.dateHeader = headers.get(3);
+                    this.messageId = headers.get(4);
+                    this.body = body;
+                    this.user = user;
+                    this.deleted = false;
                 }
             }
         }

@@ -9,16 +9,18 @@ import java.util.ArrayList;
 public class FileManager {
 
     public static final String FILE_STORAGE = System.getProperty("user.dir") + "/tmp/";
-    public static final String MAIL_STORAGE = System.getProperty("user.dir") + "/ressource/server/";
+    public static final String CLIENT_STORAGE = System.getProperty("user.dir") + "/ressource/client/";
+    public static final String SERVER_STORAGE = System.getProperty("user.dir") + "/ressource/server/";
 
 
     /**
      * Store mail into user file
      * @param mail Mail
      */
-    public static void storeMail(Mail mail){
+    public static void storeMail(Mail mail, boolean forTheClient){
 
-        String filePath = FILE_STORAGE + mail.getUser().getName();
+        // store in a different file whether it's for the client or for the server
+        String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + mail.getUser().getName();
         String mailString = "";
 
         try {
@@ -72,20 +74,7 @@ public class FileManager {
      * @return a list of messages
      */
     public static ArrayList<Mail> retrieveMails(User user) {
-        /*ArrayList<Mail> list = new ArrayList<Mail>();
-        ArrayList<String> headers = new ArrayList<>();
-        headers.add("jdoe@machine.example");
-        headers.add("mary@machine.example");
-        headers.add("Saying Hello");
-        headers.add("21 Nov 1997");
-        headers.add("1");
-        Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", user);
-
-        list.add(mail);
-        return list;*/
-
-        String filePath = MAIL_STORAGE + user.getName() + ".txt";
-
+        String filePath = SERVER_STORAGE + user.getName() + ".txt";
         return Utils.readMailsFromFile(filePath);
     }
 
@@ -96,7 +85,7 @@ public class FileManager {
      */
     public static boolean readUserMails(User user) {
 
-        String filePath = MAIL_STORAGE + user.getName() + ".txt";
+        String filePath = SERVER_STORAGE + user.getName() + ".txt";
         user.setMails(Utils.readMailsFromFile(filePath));
 
         return true;

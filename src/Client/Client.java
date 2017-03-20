@@ -112,9 +112,10 @@ public class Client {
                     if (messageReceived.split("\\s+")[0].toUpperCase().equals(MSG_OK)) {
                         System.out.println("Mail reçu : ");
                         String mailReceived = this.messageUtils.read("\r\n");
-                        // store the mail in a client file
+                        // create a Mail object linked to the connected user
                         Mail mail = new Mail(mailReceived, user);
-                        FileManager.storeMail(mail);
+                        // store the mail in the client file
+                        FileManager.storeMail(mail, true);
                     }
                 }
             }

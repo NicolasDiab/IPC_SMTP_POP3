@@ -124,6 +124,6 @@ public class Utils {
         headers.add("21 Nov 1997");
         headers.add("1");
         Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", nico);
-        FileManager.storeMail(mail);
+        FileManager.storeMail(mail, false);
     }
 }
