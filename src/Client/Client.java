@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import static Utils.Utils.computeChecksum;
@@ -35,6 +36,9 @@ public class Client {
 
     private int port;
     private String ip;
+
+
+    private List<Mail> mails;
 
     // couche qui simplifie la gestion des échanges de message avec le serveur
     private Message messageUtils;
@@ -122,8 +126,13 @@ public class Client {
                         String mailReceived = this.messageUtils.read("\r\n");
                         // create a Mail object linked to the connected user
                         Mail mail = new Mail(mailReceived, user);
-                        // store the mail in the client file
-                        FileManager.storeMail(mail, true);
+
+                        /* Store mail if not in user file */
+                        if (! this.mails.contains(mail)){
+                            // store the mail in the client file
+                            FileManager.storeMail(mail, true);
+                            this.mails.add(mail);
+                        }
                     }
                 }
             }
