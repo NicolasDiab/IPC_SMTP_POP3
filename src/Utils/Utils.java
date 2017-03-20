@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class Utils {
 
+    /**
+     *
+     * @param timestamp long
+     * @return String
+     */
     public static String computeChecksum(long timestamp){
 
         try {
@@ -36,7 +41,7 @@ public class Utils {
     public static ArrayList<Mail> readMailsFromFile(String filepath){
         ArrayList<Mail> mails = new ArrayList<Mail>();
         System.out.println(filepath);
-        try{
+        try {
             InputStream is = new FileInputStream(filepath);
             BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 
@@ -80,10 +85,7 @@ public class Utils {
                         }
                     }
                 }
-
             }
-
-
         }
         catch (Exception e){
             e.printStackTrace();

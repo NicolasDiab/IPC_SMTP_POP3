@@ -20,7 +20,9 @@ public class Message {
 
     /**
      * Stop the process until the serve receives the endSequence
-      */
+     * @param endSequence String
+     * @return String
+     */
     public String read(String endSequence) {
         byte[] messageByte = new byte[1000];
         boolean end = false;
@@ -62,7 +64,7 @@ public class Message {
 
     /**
      * Send a message to the client
-     * @param message
+     * @param message String
      */
     public void write(String message) {
         try {

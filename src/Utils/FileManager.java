@@ -41,6 +41,19 @@ public class FileManager {
         }
     }
 
+    /**
+     * Store mails into user file
+     * @param mail Mail
+     */
+    public static void storeMails(Mail mail){
+
+    }
+
+    /**
+     *
+     * @param mail Mail
+     * @return String
+     */
     public static String formatMailString(Mail mail){
 
         String mailString = "";
@@ -55,8 +68,7 @@ public class FileManager {
     }
 
     /**
-     * TODO
-     * @param user
+     * @param user User
      * @return a list of messages
      */
     public static ArrayList<Mail> retrieveMails(User user) {
@@ -79,7 +91,7 @@ public class FileManager {
 
     /**
      * TODO
-     * @param user
+     * @param user User
      * @return a list of messages
      */
     public static boolean readUserMails(User user) {
