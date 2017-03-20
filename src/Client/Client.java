@@ -69,8 +69,10 @@ public class Client {
 
             // initialize a message instance
             this.messageUtils = new Message(connexion);
+
             // read hello message
             String msgHello = this.messageUtils.read("\r\n");
+
             // get the timestamp from the hello message
             String timestamp = msgHello.split("\\s+")[4];
 
@@ -80,14 +82,20 @@ public class Client {
 
             // apop command
             String apopResponse = MSG_ERR;
-            while(apopResponse.split("\\s+")[0].toUpperCase().equals(MSG_ERR)) {
+
+            while (apopResponse.split("\\s+")[0].toUpperCase().equals(MSG_ERR)) {
+
+                /* Ask for username */
                 System.out.println("Tapez le nom d'utilisateur voulu");
                 String userName = sc.nextLine();
                 user = new User(userName, "");
+
                 // send APOP command with timestamp and sharesecret encrypted in md5
                 String msgMd5 = computeChecksum(Long.parseLong(timestamp));
                 String apopCommand = CMD_APOP + " " + userName + " " + msgMd5;
                 this.messageUtils.write(apopCommand);
+
+                /* Read APOP response */
                 apopResponse = this.messageUtils.read("\r\n");
                 System.out.println(apopResponse);
             }

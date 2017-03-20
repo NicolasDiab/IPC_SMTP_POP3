@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import Utils.*;
 
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * @author NicolasDiab
  * @author GregoirePiat <gregoire.piat@etu.univ-lyon1.fr>
@@ -60,6 +65,7 @@ public class Server {
     public void launch(){
         try {
             ServerSocket myconnex = new ServerSocket(port,6);
+            //ServerSocket myconnex = SSLServerSocketFactory.getDefault().createServerSocket(port, 6);
 
             // Wait for the client response, manage messages received from the client
             // Entering the Listening State
@@ -103,6 +109,7 @@ public class Server {
                         switch(this.state){
                             case STATE_AUTHORIZATION:
                                 if (parameterArray.length > 1) {
+                                    /* Check user */
                                     if (apopFunction(parameterArray[1])){
                                         // does the user exists ?
                                         String username = parameterArray[0];
@@ -120,6 +127,12 @@ public class Server {
                                             // get and write informations
                                             int mailsCount = currentUser.getMailsCount();
                                             int bytesSize = currentUser.getMailsSize();
+
+                                            /* @TODO USE POP3S */
+                                            //myconnex = SSLServerSocketFactory.getDefault().createServerSocket(2002);
+                                            //myconnex.accept();
+
+
                                             /** Set Transaction state **/
                                             this.state = STATE_TRANSACTION;
                                             this.messageUtils.write(MSG_OK + " maildrop has " + mailsCount + " message(s) (" + bytesSize + " octets)");
