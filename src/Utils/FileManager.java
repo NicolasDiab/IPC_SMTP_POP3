@@ -32,8 +32,7 @@ public class FileManager {
 
             mailString = formatMailString(mail);
 
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filePath), "utf-8"))) {
+            try (Writer writer = new BufferedWriter(new FileWriter(filePath, true))) {
                 writer.write(mailString);
             }
         }
