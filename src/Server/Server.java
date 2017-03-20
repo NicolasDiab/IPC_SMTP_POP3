@@ -123,7 +123,7 @@ public class Server {
                                             this.messageUtils.write(MSG_ERR + " This user does not exist");
                                         } else {
                                             // retrieve the user's mails
-                                            currentUser.setMails(FileManager.retrieveMails(currentUser));
+                                            currentUser.setMails(FileManager.retrieveMails(currentUser, false));
                                             // get and write informations
                                             int mailsCount = currentUser.getMailsCount();
                                             int bytesSize = currentUser.getMailsSize();

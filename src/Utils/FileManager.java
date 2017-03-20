@@ -23,6 +23,11 @@ public class FileManager {
         String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + mail.getUser().getName() + ".txt";
         String mailString = "";
 
+        for (Mail m : retrieveMails(mail.getUser(), true)) {
+            if (m.getMessageId() == mail.getMessageId())
+                return;
+        }
+
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -72,8 +77,8 @@ public class FileManager {
      * @param user User
      * @return a list of messages
      */
-    public static ArrayList<Mail> retrieveMails(User user) {
-        String filePath = SERVER_STORAGE + user.getName() + ".txt";
+    public static ArrayList<Mail> retrieveMails(User user, boolean forTheClient) {
+        String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + user.getName() + ".txt";
         return Utils.readMailsFromFile(filePath);
     }
 
