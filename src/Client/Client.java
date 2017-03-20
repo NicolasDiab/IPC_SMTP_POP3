@@ -76,14 +76,23 @@ public class Client {
 
             Scanner sc = new Scanner(System.in);
 
-            // apop command
-            System.out.println("Tapez le nom d'utilisateur voulu");
-            String userName = sc.nextLine();
-            // send APOP command with timestamp and sharesecret encrypted in md5
-            String msgMd5 = computeChecksum(Long.parseLong(timestamp));
-            String apopCommand = CMD_APOP + " " + userName + " " + msgMd5;
-            this.messageUtils.write(apopCommand);
+            User user = null;
 
+            // apop command
+            String apopResponse = MSG_ERR;
+            while(apopResponse.split("\\s+")[0].toUpperCase().equals(MSG_ERR)) {
+                System.out.println("Tapez le nom d'utilisateur voulu");
+                String userName = sc.nextLine();
+                user = new User(userName, "");
+                // send APOP command with timestamp and sharesecret encrypted in md5
+                String msgMd5 = computeChecksum(Long.parseLong(timestamp));
+                String apopCommand = CMD_APOP + " " + userName + " " + msgMd5;
+                this.messageUtils.write(apopCommand);
+                apopResponse = this.messageUtils.read("\r\n");
+                System.out.println(apopResponse);
+            }
+
+            // Transaction
             while(!connexion.isClosed()) {
                 //scan the client command
                 System.out.println("Tapez une commande");
@@ -95,6 +104,20 @@ public class Client {
                 //wait for server response
                 System.out.println("Réponse du serveur : ");
                 String messageReceived = this.messageUtils.read("\r\n");
+
+                if (command.split("\\s+")[0].toUpperCase().equals(CMD_RETR)) {
+                    // if command sent is RETR
+                    // Check server response : +OK or -ERR
+                    // if +OK, read the full mail
+                    if (messageReceived.split("\\s+")[0].toUpperCase().equals(MSG_OK)) {
+                        String mailReceived = this.messageUtils.read("\r\n.\r\n");
+                        System.out.println("Mail reçu : ");
+                        System.out.println(mailReceived);
+                        // store the mail in a client file
+                        Mail mail = new Mail(mailReceived, user);
+                        FileManager.storeMail(mail);
+                    }
+                }
             }
         }
         catch(Exception ex){
