@@ -71,6 +71,8 @@ public class Client {
         try {
             Socket connexion = this.connectToServer();
 
+            mails = new ArrayList<Mail>();
+
             // initialize a message instance
             this.messageUtils = new Message(connexion);
 
@@ -127,8 +129,14 @@ public class Client {
                         // create a Mail object linked to the connected user
                         Mail mail = new Mail(mailReceived, user);
 
+                        boolean store = true;
                         /* Store mail if not in user file */
-                        if (! this.mails.contains(mail)){
+                        for (Mail m : this.mails) {
+                            if (mail.getMessageId().equals(m.getMessageId()))
+                                store = false;
+                        }
+
+                        if (store){
                             // store the mail in the client file
                             FileManager.storeMail(mail, true);
                             this.mails.add(mail);
