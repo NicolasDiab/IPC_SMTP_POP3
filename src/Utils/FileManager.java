@@ -76,4 +76,17 @@ public class FileManager {
 
         return Utils.readMailsFromFile(filePath);
     }
+
+    /**
+     * TODO
+     * @param user
+     * @return a list of messages
+     */
+    public static boolean readUserMails(User user) {
+
+        String filePath = MAIL_STORAGE + user.getName() + ".txt";
+        user.setMails(Utils.readMailsFromFile(filePath));
+
+        return true;
+    }
 }

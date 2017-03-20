@@ -49,7 +49,7 @@ public class Utils {
             }
 
             String fileAsString = sb.toString();
-            System.out.println("Contents : " + fileAsString);
+            //System.out.println("Contents : " + fileAsString);
 
             /* Split each line */
             String[] splittedMessage = fileAsString.split("\\r\\n|\\n|\\r");
@@ -70,7 +70,7 @@ public class Utils {
 
                             String body = "";
                             for (int i = 5; i < newMail.size(); ++ i)
-                                body += newMail.get(i);
+                                body += newMail.get(i) + "\n";
 
                         /* Create a new message */
                             Mail mail = new Mail(headers, body, new User("null", "null"));
@@ -96,5 +96,32 @@ public class Utils {
 
     public static String getSharedSecret(){
         return "SharedSecretRandom";
+    }
+
+    public static void displayMessage(){
+        System.out.println("88888888888888b.  .d8888b.             8888888b.  .d88888b. 8888888b.  .d8888b. ");
+        System.out.println("  888  888   Y88bd88P  Y88b            888   Y88bd88P\" \"Y88b888   Y88bd88P  Y88b");
+        System.out.println("  888  888    888888    888            888    888888     888888    888     .d88P");
+        System.out.println("  888  888   d88P888                   888   d88P888     888888   d88P    8888\" ");
+        System.out.println("  888  8888888P\" 888                   8888888P\" 888     8888888888P\"      \"Y8b.");
+        System.out.println("  888  888       888    888   888888   888       888     888888       888    888");
+        System.out.println("  888  888       Y88b  d88P            888       Y88b. .d88P888       Y88b  d88P");
+        System.out.println("8888888888        \"Y8888P\"             888        \"Y88888P\" 888        \"Y8888P\" ");
+
+    }
+
+
+    public static void test(){
+        String userDir = System.getProperty("user.dir");
+        System.out.println(userDir);
+        User nico = new User("Strelytsia", "nicotheheros@hotmail.fr");
+        ArrayList<String> headers = new ArrayList<>();
+        headers.add("jdoe@machine.example");
+        headers.add("mary@machine.example");
+        headers.add("Saying Hello");
+        headers.add("21 Nov 1997");
+        headers.add("1");
+        Mail mail = new Mail(headers, "Hello server, \r\nThis is a message just to say hello.\r\nSo, \"Hello\".", nico);
+        FileManager.storeMail(mail);
     }
 }

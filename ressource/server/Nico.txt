@@ -17,8 +17,11 @@ Saying Hello
 
 
 Hello server,
-This is a message just to say yolo.
-So, "YOLO".
+One two one two, this is a test.
+So, "TEST".
+So, "RETEST".
+So, "AGAIN".
+So, "GOOdByE".
 .
 
 jdoe@machine.example
@@ -29,6 +32,6 @@ Saying Hello
 
 
 Hello server,
-This is a message just to say yallah.
-So, "YALLAH".
+This is a message just to say hallo, wie gehts.
+So, "HALLO".
 .
