@@ -1,9 +1,6 @@
 package Client;
 
-import Utils.FileManager;
-import Utils.Mail;
-import Utils.Message;
-import Utils.User;
+import Utils.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -13,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import static Utils.Utils.computeChecksum;
 
 /**
  * @author NicolasDiab
@@ -71,23 +70,22 @@ public class Client {
             // initialize a message instance
             this.messageUtils = new Message(connexion);
             // read hello message
-            this.messageUtils.read("\r\n");
+            String msgHello = this.messageUtils.read("\r\n");
+            // get the timestamp from the hello message
+            String timestamp = msgHello.split("\\s+")[4];
 
-            // Initialise users
-            User userNico = new User("Nico", "nicolas.diab@etu.univ-lyon1.fr");
-            User userGregoire = new User("Gregoire", "gregoire.piat@etu.univ-lyon1.fr");
-            ArrayList<User> users = new ArrayList<User>();
-            users.add(userNico);
-            users.add(userGregoire);
-            User currentUser = null;
+            Scanner sc = new Scanner(System.in);
 
-            // TODO
-            // send APOP
-            // Receive Timestamp
+            // apop command
+            System.out.println("Tapez le nom d'utilisateur voulu");
+            String userName = sc.nextLine();
+            // send APOP command with timestamp and sharesecret encrypted in md5
+            String msgMd5 = computeChecksum(Long.parseLong(timestamp));
+            String apopCommand = CMD_APOP + " " + userName + " " + msgMd5;
+            this.messageUtils.write(apopCommand);
 
             while(!connexion.isClosed()) {
                 //scan the client command
-                Scanner sc = new Scanner(System.in);
                 System.out.println("Tapez une commande");
                 String command = sc.nextLine();
 
