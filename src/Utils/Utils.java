@@ -56,28 +56,31 @@ public class Utils {
             ArrayList<String> newMail = new ArrayList<String>();
 
             for (String split : splittedMessage){
-                newMail.add(split);
-                if (split.startsWith(".")){
+                if (!split.equals("")){
+                    newMail.add(split);
+                    if (split.startsWith(".")){
                     /* Check that headers are enough */
-                    if (newMail.size() > 5){
-                        ArrayList<String> headers = new ArrayList<String>();
-                        headers.add(newMail.get(0));
-                        headers.add(newMail.get(1));
-                        headers.add(newMail.get(2));
-                        headers.add(newMail.get(3));
-                        headers.add(newMail.get(4));
+                        if (newMail.size() > 5){
+                            ArrayList<String> headers = new ArrayList<String>();
+                            headers.add(newMail.get(0));
+                            headers.add(newMail.get(1));
+                            headers.add(newMail.get(2));
+                            headers.add(newMail.get(3));
+                            headers.add(newMail.get(4));
 
-                        String body = "";
-                        for (int i = 0; i < newMail.size(); ++ i)
-                            body.concat(newMail.get(i));
+                            String body = "";
+                            for (int i = 5; i < newMail.size(); ++ i)
+                                body += newMail.get(i);
 
                         /* Create a new message */
-                        Mail mail = new Mail(headers, body, new User("null", "null"));
-                        mails.add(mail);
-                        newMail.clear();
+                            Mail mail = new Mail(headers, body, new User("null", "null"));
+                            mails.add(mail);
+                            newMail.clear();
 
+                        }
                     }
                 }
+
             }
 
 
