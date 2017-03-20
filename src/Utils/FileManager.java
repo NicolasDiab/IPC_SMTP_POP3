@@ -49,7 +49,7 @@ public class FileManager {
         mailString += mail.getSubjectHeader() + "\r\n";
         mailString += mail.getDateHeader() + "\r\n";
         mailString += "\r\n";
-        mailString += mail.getBody() + ".\r\n";
+        mailString += mail.getBody();
 
         return mailString;
     }
