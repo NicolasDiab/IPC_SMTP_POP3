@@ -103,7 +103,7 @@ public class Server {
                         switch(this.state){
                             case STATE_AUTHORIZATION:
                                 if (parameterArray.length > 1) {
-                                    if (/*apopFunction(parameterArray[1])*/true){
+                                    if (apopFunction(parameterArray[1])){
                                         // does the user exists ?
                                         String username = parameterArray[0];
                                         for (User u : users) {
