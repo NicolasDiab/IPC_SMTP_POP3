@@ -50,6 +50,7 @@ public class Server {
     private String state;
     private String checksumSent;
     private String timestampSent;
+    private ServerSocket myconnex;
 
     // couche qui simplifie la gestion des échanges de message avec le client
     private Message messageUtils;
@@ -57,6 +58,14 @@ public class Server {
     public Server (int port) {
         this.port = port;
         this.state = STATE_CLOSED;
+
+
+        try {
+            this.myconnex = new ServerSocket(port,6);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //ServerSocket myconnex = SSLServerSocketFactory.getDefault().createServerSocket(port, 6);
     }
 
     /**
@@ -64,14 +73,11 @@ public class Server {
      */
     public void launch(){
         try {
-            ServerSocket myconnex = new ServerSocket(port,6);
-            //ServerSocket myconnex = SSLServerSocketFactory.getDefault().createServerSocket(port, 6);
-
             // Wait for the client response, manage messages received from the client
             // Entering the Listening State
             this.state = STATE_LISTENING;
             System.out.println("Attente du client");
-            Socket connexion = myconnex.accept();
+            Socket connexion = this.myconnex.accept();
 
             // accept the client connection - stop the processus waiting for the client
             System.out.println("New client connected");
@@ -157,9 +163,11 @@ public class Server {
                             case STATE_TRANSACTION:
                                 try {
                                     int mailId = Integer.parseInt(parameterArray[0]);
+                                    // increment the mail's ID pressed by the user
+                                    mailId += 1;
                                     // message exists and not deleted ?
-                                    if (currentUser.hasMail(mailId) && !currentUser.mailDeleted(mailId)) {
-                                        Mail m = currentUser.getMail(mailId);
+                                    if (currentUser.getMails().size() >= mailId) {
+                                        Mail m = currentUser.getMails().get(mailId);
                                         this.messageUtils.write(MSG_OK + " " + m.getSize() + " bytes");
                                         // write the message
                                         this.messageUtils.write(FileManager.formatMailString(m));
@@ -191,6 +199,8 @@ public class Server {
                                 this.messageUtils.write(MSG_OK + " POP3 server signing off");
                                 // close the TCP connection
                                 connexion.close();
+                                // wait for a new client
+                                this.launch();
                                 break;
                             case STATE_TRANSACTION:
                                 // remove deleted messages
@@ -203,6 +213,8 @@ public class Server {
                                 }
                                 // in all cases, close the TCP connection
                                 connexion.close();
+                                // wait for a new client
+                                this.launch();
                                 break;
                         }
                         break;
