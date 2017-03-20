@@ -23,10 +23,11 @@ public class FileManager {
         String filePath = (forTheClient ? CLIENT_STORAGE : SERVER_STORAGE) + mail.getUser().getName() + ".txt";
         String mailString = "";
 
+        /*boolean mailExists = false;
         for (Mail m : retrieveMails(mail.getUser(), true)) {
             if (m.getMessageId() == mail.getMessageId())
-                return;
-        }
+                mailExists = true;
+        }*/
 
         try {
             File file = new File(filePath);
