@@ -2,6 +2,8 @@ package Client;
 
 import Utils.*;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -52,11 +54,13 @@ public class Client {
      * Connect to server
      * @return Socket
      */
-    public Socket connectToServer() {
+    public SSLSocket connectToServer() {
         System.out.println("Connecting to server");
-        Socket connexion = null;
+        SSLSocket connexion = null;
         try {
-            connexion = new Socket(InetAddress.getByName(this.ip), this.port);
+            SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            connexion = (SSLSocket) sslsocketfactory.createSocket(InetAddress.getByName(this.ip), this.port);
+            connexion.setEnabledCipherSuites(sslsocketfactory.getSupportedCipherSuites());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +73,7 @@ public class Client {
      */
     public void launch(){
         try {
-            Socket connexion = this.connectToServer();
+            SSLSocket connexion = this.connectToServer();
 
             mails = new ArrayList<Mail>();
 

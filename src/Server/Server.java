@@ -10,6 +10,7 @@ import Utils.*;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
@@ -61,7 +62,12 @@ public class Server {
 
 
         try {
-            this.myconnex = new ServerSocket(port,6);
+            //this.myconnex = new ServerSocket(port,6);
+            SSLServerSocket secureSocket = null;
+            SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+            secureSocket = (SSLServerSocket) factory.createServerSocket(port);
+            secureSocket.setEnabledCipherSuites(factory.getSupportedCipherSuites());
+            myconnex = secureSocket;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +83,8 @@ public class Server {
             // Entering the Listening State
             this.state = STATE_LISTENING;
             System.out.println("Attente du client");
-            Socket connexion = this.myconnex.accept();
+            SSLSocket connexion = null;
+            connexion = (SSLSocket) this.myconnex.accept();
 
             // accept the client connection - stop the processus waiting for the client
             System.out.println("New client connected");
